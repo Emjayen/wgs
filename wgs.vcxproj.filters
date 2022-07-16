@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource files">
+      <UniqueIdentifier>{21945a56-725b-4ba9-a7ec-03815b2c5aa8}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Make files">
+      <UniqueIdentifier>{908f6b29-c453-444b-bcfc-91fae11cbabc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="VisualGDB settings">
+      <UniqueIdentifier>{ed8c398d-48e4-4aeb-b509-b3fdc7079f01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{d768aa8f-51ff-4486-a2fc-e7561085fe6c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="debug.mak">
+      <Filter>Make files</Filter>
+    </None>
+    <None Include="release.mak">
+      <Filter>Make files</Filter>
+    </None>
+    <None Include="wgs-Debug.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+    <None Include="wgs-Release.vgdbsettings">
+      <Filter>VisualGDB settings</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\wgs.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper.cpp" />
+    <ClCompile Include="src\log.cpp" />
+    <ClCompile Include="src\server.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\wgs.h" />
+    <ClInclude Include="src\pce.h" />
+    <ClInclude Include="src\helper.h" />
+    <ClInclude Include="src\log.h" />
+    <ClInclude Include="src\server.h" />
+    <ClInclude Include="src\wcp.h" />
+    <ClInclude Include="src\maps.h" />
+  </ItemGroup>
+</Project>
