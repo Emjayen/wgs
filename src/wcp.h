@@ -119,8 +119,8 @@ struct wcp_hdr
 
 struct wcp_join : wcp_hdr
 {
-	u32 id; /* Game instance counter */
-	u32 key; /* Entry key (local games) */
+	u32 game_id; /* Game instance counter */
+	u32 game_key; /* Entry key (local games) */
 	u8 _1; /* Unknown */
 	u16 port; /* ? */
 	u32 peer_key; /* ? */
@@ -217,20 +217,21 @@ struct wcp_chat_ex : wcp_hdr
 	u8 count;
 	u8 pid;
 	u8 ctrl;
-
+	
 	union
 	{
 		struct
 		{
 			char text[0];
-		} Lobby;
-
-		struct
+		} lobby;
+		
+		struct 
 		{
-			u32 type;
-			char text[];
-		} Game;
+			u32 flags;
+			char text[0];
+		} game;
 	};
+	
 };
 
 
@@ -279,5 +280,50 @@ struct wcp_stop_lag : wcp_hdr
 	u32 timestamp;
 };
 
+
+/*
+ * WSP protocol
+ * 
+ */
+#define WSP_MAGIC  0xB7
+
+#define WSP_HELLO      1
+#define WSP_ADD_GAME   2
+#define WSP_REM_GAME   3
+
+struct wsp_hdr
+{
+	u8 magic;
+	u8 mid;
+	u16 len;
+};
+
+struct wsp_hello : wsp_hdr
+{
+};
+
+struct wsp_add_game : wsp_hdr
+{
+	u32 game_id;
+    u32 game_key;
+	u8 slots_total;
+	u8 slots_used;
+	u8 slots_players;
+	u8 unused;
+    u32 map_flags;
+    u32 map_xor;
+    u16 host_port;
+    u32 host_addr;
+	char ect[]; /* game name\0
+	char ect[];  * host name\0
+	char ect[];  * map path\0 
+	char ect[];  */
+    
+};
+
+struct wsp_rem_game : wsp_hdr
+{
+	u32 game_id;
+};
 
 #pragma pack(pop)

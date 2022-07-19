@@ -32,6 +32,11 @@ extern int efd;
 struct timer;
 void SetTimer(timer* t, u32 Due, u32 Period);
 
+// Environment
+struct _env
+{
+	u32 local_ipv4;
+} extern env;
 
 /*
  * GetTickCount()
@@ -51,11 +56,11 @@ u32 GetTickCount();
 #define CFG_MAX_PLAYERS      (CFG_MAX_GAMES * 16) /* Maximum number of players in total. */
 #define CFG_MAX_TURNS        324000 /* About 3 hours @ 32ms turns */
 #define CFG_MAX_GAME_STREAM  0x1000000 /* (16MB) Governs the size of the game input stream; this needs to accomodate all input, from all players, for the entire session. */
-#define CFG_GAME_PORT           6112 /* Port for game (WCP). */
+#define CFG_GAME_PORT           6113 /* Port for game (WCP). */
 #define CFG_KEEPALIVE_IDLE      20 /* Threshold for TCP keep-alive engaging, in seconds */
 #define CFG_KEEPALIVE_COUNT     3  /* Number of TCP keep-alive probes before timing out, in seconds */
 #define CFG_KEEPALIVE_INTERVAL  12 /* Interval between keep-alive probes, in seconds */
-#define CFG_XMIT_TIMEOUT        ((CFG_KEEPALIVE_IDLE + (CFG_KEEPALIVE_COUNT * CFG_KEEPALIVE_INTERVAL)) / 2) * 1000
+#define CFG_XMIT_TIMEOUT        (((CFG_KEEPALIVE_IDLE + CFG_KEEPALIVE_COUNT * CFG_KEEPALIVE_INTERVAL) - 1) * 1000)
 #define CFG_DEFER_ACPT_TIME     4
 #define CFG_TCP_QUEUE_DEPTH     128
 #define CFG_PLAYER_SNDBUF_SZ    0x1000 /* Player userland send buffer size. */
@@ -64,3 +69,6 @@ u32 GetTickCount();
 #define CFG_PING_INTERVAL       6000 /* Ping interval, in msec. */
 #define CFG_TURN_CLAMP          250 /* Clamps the maximum turn period; excess time will just be eaten. */
 #define CFG_STALL_THRESHOLD     3500 /* Threshold at which a player stalls, in [simulation] msec. */
+#define CFG_MAX_USERS           32
+#define CFG_IDLE_GAME_TIMEOUT   30 /* Countdown till game autodestruction once it's empty (no clients) */
+#define CFG_MAX_PENDING_TIME    10000 /* Maximum amount of unacknowledged simulation time for a player, in msec*/

@@ -5,13 +5,16 @@
 #include "wgs.h"
 #include "server.h"
 #include <sys/random.h>
-
-
-
+#include <ifaddrs.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
 
 
 // Globals
 int efd; /* Our epoll */
+_env env;
 static int ifd; /* Interrupt timer. */
 static TimerWheel<CFG_TW_SIZE, CFG_TW_GRANULARITY> tw;
 static u32 cached_tick;
@@ -57,7 +60,29 @@ bool Startup()
 		return false;
 	}
 
+	// Get local interface address.
+	ifaddrs* ifa_first;
+	
+	if(getifaddrs(&ifa_first) < 0)
+	{
+		LERR("Failed to getifaddrs");
+		return false;
+	}
+	
+	LOG("Local IPv4 interfaces:");
 
+	for(ifaddrs* ifa = ifa_first; ifa; ifa = ifa->ifa_next)
+	{
+		if(ifa->ifa_addr->sa_family == AF_INET)
+		{
+			LOG("  %s (%s)", inet_ntoa(((sockaddr_in*) ifa->ifa_addr)->sin_addr), ifa->ifa_name);
+			
+			if(!(ifa->ifa_flags & IFF_LOOPBACK))
+				env.local_ipv4 = ((sockaddr_in*) ifa->ifa_addr)->sin_addr.s_addr;
+				
+		}
+	}
+	
 	return true;
 }
 	
